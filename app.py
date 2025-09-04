@@ -6,6 +6,8 @@ from tkinter import N
 load_dotenv()
 
 from api.process_file import process_file
+from api.classificar_email import classificar_email
+from api.gerar_resposta_sugerida import gerar_resposta_sugerida
 
 app = Flask(__name__)
 app.debug = True
@@ -29,8 +31,13 @@ def processar_email():
         except Exception as e:
             return jsonify({"error": str(e)}), 400
 
+    categoria = classificar_email(email_content)
+    resposta_sugerida = gerar_resposta_sugerida(email_content, categoria)
+
     return jsonify(
         {
+            "categoria": categoria,
+            "resposta_sugerida": resposta_sugerida,
             "email_content": email_content,
             "remetente": remetente,
             "titulo": titulo,

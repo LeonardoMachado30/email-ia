@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Análise de E-mail com IA</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Gerador de E-mail</h1>
+
+      <div class="description">
+        <p>
+          Os e-mails são gerados de modo a dizer se é "PRODUTIVO" ou
+          "IMPRODUTIVO"
+        </p>
+        <p>PRODUTIVO: E-mails relacionados ao trabalho ou profissional</p>
+        <p>IMPRODUTIVO: E-mails relacionados ao pessoal ou individual</p>
+      </div>
+
+      <button id="historyBtn">Histórico</button>
+
+      <form id="emailForm" class="form">
+        <div class="input-wrapper">
+          <label for="remetente" data-optional="true">Remetente</label>
+          <input type="text" id="remetente" name="remetente" />
+          <button type="button" class="clear-btn" id="clearRemetente" disabled>
+            X
+          </button>
+        </div>
+
+        <div class="input-wrapper">
+          <label for="titulo">Título</label>
+          <input type="text" id="titulo" name="titulo" required />
+          <button type="button" class="clear-btn" id="clearTitulo" disabled>
+            X
+          </button>
+        </div>
+
+        <label for="email_content">Corpo do E-mail</label>
+        <div class="input-wrapper">
+          <button
+            disabled
+            type="button"
+            style="
+              background-color: transparent;
+              color: #5e02b4;
+              padding: 0;
+              width: fit-content;
+              font-size: 12px;
+              position: absolute;
+              right: 0;
+              top: -20px;
+            "
+            id="clearTextareaBtn"
+          >
+            limpar texto
+          </button>
+          <textarea id="email_content" name="email_content" rows="6" required>
+{{ email_content }}</textarea
+          >
+        </div>
+
+        <label for="email_file">Ou faça upload do arquivo (.txt, .pdf)</label>
+        <div class="flex" style="margin-bottom: 10px">
+          <input
+            class="email_file"
+            type="file"
+            id="email_file"
+            name="email_file"
+            accept=".txt,.pdf"
+          />
+          <button id="btnRemoveFile" class="btnRemoveFile" disabled>X</button>
+        </div>
+
+        <div class="flex gap-2">
+          <button type="submit" id="submitBtn">
+            <span id="btnText">Gerar E-mail</span>
+          </button>
+          <button type="button" id="clearAllBtn" disabled>Limpar Tudo</button>
+        </div>
+      </form>
+
+      <div id="resultadoContainer"></div>
+    </div>
+
+    <div id="historyModal">
+      <div id="historyModalContent">
+        <h3>Histórico</h3>
+        <div id="historyList"></div>
+        <button id="closeHistory">Fechar</button>
+      </div>
+    </div>
+
+    <script src="/static/index.js"></script>
+  </body>
+</html>

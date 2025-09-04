@@ -1,0 +1,267 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0; /* cinza claro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-size: 16px;
+}
+
+.flex {
+  display: flex;
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.email_file {
+  width: 100%;
+  margin: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.btnRemoveFile {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.description {
+  text-align: start;
+  font-size: 12px !important;
+  color: #666666;
+}
+
+h1,
+label {
+  color: #5e02b4 !important;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+label {
+  text-align: left;
+  font-weight: bold;
+  margin: 10px 0 5px;
+  color: #333;
+}
+
+label[data-optional="true"]::after {
+  content: " (opcional)" !important;
+  font-weight: normal;
+  color: #666;
+  font-size: 0.9em;
+}
+
+label[data-optional="true"]::after {
+  content: " (opcional)" !important;
+  font-weight: normal;
+  color: #666;
+  font-size: 0.9em;
+}
+
+label:has(input:disabled)::after {
+  content: " (desabilitado)" !important;
+  font-weight: normal;
+  color: #666;
+  font-size: 0.9em;
+}
+
+/* Quando o label tiver um textarea desabilitado */
+label:has(textarea:disabled)::after {
+  content: " (desabilitado)" !important;
+  font-weight: normal;
+  color: #666;
+  font-size: 0.9em;
+}
+
+input,
+textarea {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 2px solid #5e02b4;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  font-size: 14px;
+  resize: none;
+}
+
+input:disabled,
+textarea:disabled {
+  background-color: rgba(200, 200, 200, 0.5);
+  border-color: rgba(200, 200, 200, 0.5);
+}
+
+button {
+  padding: 12px;
+  background: #5e02b4;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+button:hover:enabled {
+  /* transform: scale(1.001); */
+  background: #6a10c9;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Loader animado */
+.loader {
+  border: 3px solid #fff;
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Resultado com fade + slide up */
+.resultado {
+  margin-top: 20px;
+  padding: 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlide 0.6s ease forwards;
+}
+
+@keyframes fadeSlide {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resultado h2 {
+  margin-top: 0;
+  color: #5e02b4;
+}
+
+/* Botão histórico */
+#historyBtn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  padding: 10px 15px;
+  background-color: #5e02b4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Modal histórico */
+#historyModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+
+#historyModalContent {
+  background: white;
+  padding: 20px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80%;
+  overflow-y: auto;
+  border-radius: 8px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.history-remove {
+  color: red;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.input-wrapper input,
+.input-wrapper textarea {
+  width: 100%;
+  padding-right: 35px; /* espaço para o botão X */
+  box-sizing: border-box;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: #ccc;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-btn:disabled {
+  background: #eee;
+  cursor: not-allowed;
+}
+
+.gap-2 {
+  gap: 4px;
+}
