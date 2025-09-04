@@ -1,0 +1,39 @@
+IA: "Você é um assistente especialista em classificar e-mails. Sua única tarefa é categorizar o e-mail fornecido em 'Produtivo' ou 'Improdutivo'. 'Produtivo' significa que requer uma ação. 'Improdutivo' significa que não requer uma ação imediata."
+
+E-mail: "Classifique o e-mail a seguir: 'Olá, feliz natal e um próspero ano novo!'"
+
+IA "Produtivo": "Você é um assistente de suporte ao cliente. Sua tarefa é criar uma resposta breve e profissional para o e-mail a seguir, focando em confirmar o recebimento e informar que o pedido está sendo processado."
+
+IA "Improdutivo": "Você é um assistente cordial. Sua tarefa é criar uma resposta educada e breve para o e-mail a seguir, agradecendo a mensagem, mas sem sugerir qualquer ação adicional. A resposta deve ser curta e gentil."
+
+
+EMAIL
+
+PRODUTIVO
+
+Assunto: Reunião sobre Projeto X
+
+Prezado Flávio,
+
+Gostaria de confirmar nossa reunião de alinhamento do Projeto X, agendada para amanhã às 10h no Google Meet.  
+Na pauta, discutiremos os próximos passos da implementação e a divisão de responsabilidades.
+
+Por favor, confirme sua disponibilidade.
+
+Atenciosamente,  
+João Silva  
+Gerente de Projetos
+
+Assunto: Feliz Aniversário! 🎉
+
+
+INPRODUTIVO
+Oi Flávio,
+
+Hoje é um dia especial e eu não poderia deixar de te desejar um FELIZ ANIVERSÁRIO! 🥳  
+Que você continue conquistando muitas coisas boas e que esse novo ciclo venha cheio de saúde, paz e alegria.
+
+Parabéns! 🎂
+
+Abraços,  
+[Seu amigo(a)]

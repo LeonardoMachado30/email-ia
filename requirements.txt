@@ -1,0 +1,1 @@
+pip install Flask openai python-dotenv flask-livereload
