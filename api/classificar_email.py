@@ -1,7 +1,9 @@
 from transformers import pipeline
 from api.clean_text import clean_text
 
-classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+# classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+
+classifier = pipeline("zero-shot-classification", model="valhalla/distilbart-mnli-12-1")
 
 
 def classificar_email(email: str) -> str:
