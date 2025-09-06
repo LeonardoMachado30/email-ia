@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
-from livereload import Server
-from tkinter import N
+import os
 
 load_dotenv()
 
@@ -10,7 +9,7 @@ from api.classificar_email import classificar_email
 from api.gerar_resposta_sugerida import gerar_resposta_sugerida
 
 app = Flask(__name__)
-app.debug = True
+app.debug = os.getenv("FLASK_ENV") == "development"
 
 
 @app.route("/")
@@ -46,8 +45,14 @@ def processar_email():
 
 
 if __name__ == "__main__":
-    server = Server(app.wsgi_app)
-    server.watch("*.py")
-    server.watch("templates/*.html")
-    server.watch("static/*")
-    server.serve(port=5000)
+    if app.debug:
+        from livereload import Server
+
+        server = Server(app.wsgi_app)
+        server.watch("*.py")
+        server.watch("templates/*.html")
+        server.watch("static/*")
+        server.serve(port=5000)
+    else:
+        # Em produção só roda o Flask
+        app.run(host="0.0.0.0", port=5000)
