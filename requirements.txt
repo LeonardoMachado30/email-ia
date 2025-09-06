@@ -3,7 +3,7 @@ Flask==2.3.3
 python-dotenv==1.0.0
 requests==2.31.0
 transformers==4.41.2
-torch==2.2.0
+torch==2.8.0
 PyPDF2==3.0.1
 
 # Development (opcional, só instale se precisar localmente)
