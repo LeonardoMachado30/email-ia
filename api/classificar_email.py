@@ -1,12 +1,25 @@
 from transformers import pipeline
 from api.clean_text import clean_text
 import torch
+import gc
 
 # 328M
 # O modelo utilizado é o "cross-encoder/nli-distilroberta-base", um modelo de linguagem treinado para tarefas de inferência de linguagem natural (NLI - Natural Language Inference).
 # Este modelo é baseado na arquitetura DistilRoBERTa, uma versão compacta e eficiente do RoBERTa, treinada para entender relações semânticas entre pares de sentenças.
 # O modelo é capaz de realizar classificação zero-shot, ou seja, pode classificar textos em categorias mesmo sem ter sido treinado especificamente para elas, apenas com base em descrições das categorias (labels).
 # Fonte: https://huggingface.co/cross-encoder/nli-distilroberta-base
+
+# classifier = pipeline(
+#     "zero-shot-classification",
+#     model="valhalla/distilbart-mnli-12-1",
+#     device=-1,  # CPU only
+#     return_all_scores=False,
+#     use_fast=True,
+#     model_kwargs={
+#         "dtype": torch.float32,  # Melhor para CPU
+#         "low_cpu_mem_usage": True,
+#     },
+# )
 
 classifier = pipeline(
     "zero-shot-classification",
@@ -15,7 +28,7 @@ classifier = pipeline(
     return_all_scores=False,  # Apenas o melhor resultado
     use_fast=True,  # Tokenizer rápido
     model_kwargs={
-        "dtype": torch.float16,  # Reduz uso de memória
+        "dtype": torch.float32,  # Reduz uso de memória
         "low_cpu_mem_usage": True,
     },
 )
@@ -40,6 +53,10 @@ def classificar_email(email: str) -> str:
             candidate_labels=candidate_labels,
             hypothesis_template="Este email é {}.",
         )
+
+        # del classifier
+        # gc.collect()
+        # torch.cuda.empty_cache()
 
         if not resposta or "labels" not in resposta or "scores" not in resposta:
             return "ERRO_CLASSIFICACAO"
