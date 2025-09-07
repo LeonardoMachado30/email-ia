@@ -1,68 +1,58 @@
 from transformers import pipeline
 from api.clean_text import clean_text
 import torch
-import gc
 
-# 328M
-# O modelo utilizado é o "cross-encoder/nli-distilroberta-base", um modelo de linguagem treinado para tarefas de inferência de linguagem natural (NLI - Natural Language Inference).
-# Este modelo é baseado na arquitetura DistilRoBERTa, uma versão compacta e eficiente do RoBERTa, treinada para entender relações semânticas entre pares de sentenças.
-# O modelo é capaz de realizar classificação zero-shot, ou seja, pode classificar textos em categorias mesmo sem ter sido treinado especificamente para elas, apenas com base em descrições das categorias (labels).
-# Fonte: https://huggingface.co/cross-encoder/nli-distilroberta-base
-
-# classifier = pipeline(
-#     "zero-shot-classification",
-#     model="valhalla/distilbart-mnli-12-1",
-#     device=-1,  # CPU only
-#     return_all_scores=False,
-#     use_fast=True,
-#     model_kwargs={
-#         "dtype": torch.float32,  # Melhor para CPU
-#         "low_cpu_mem_usage": True,
-#     },
-# )
-
+# Pipeline mais leve e CPU-friendly
 classifier = pipeline(
     "zero-shot-classification",
-    model="valhalla/distilbart-mnli-12-1",
-    device=-1,  # Força uso de CPU
-    return_all_scores=False,  # Apenas o melhor resultado
-    use_fast=True,  # Tokenizer rápido
+    model="typeform/distilbert-base-uncased-mnli",  # modelo pequeno
+    device=-1,  # CPU
+    return_all_scores=False,
+    use_fast=True,
     model_kwargs={
-        "dtype": torch.float32,  # Reduz uso de memória
+        "dtype": torch.float32,
         "low_cpu_mem_usage": True,
     },
 )
 
 
 def classificar_email(email: str) -> str:
+    """
+    Classifica e-mails em PRODUTIVO ou IMPRODUTIVO.
+    PRODUTIVO = relacionado a trabalho/profissional.
+    IMPRODUTIVO = pessoal ou sem relação com trabalho.
+    """
     email_limpo = clean_text(email)
-
+    print(email_limpo)
     candidate_labels = [
-        "Email profissional relacionado a trabalho",
-        "Email pessoal sem relação com trabalho",
+        "E-mail relacionado a trabalho/profissional",
+        "E-mail pessoal ou não relacionado a trabalho",
     ]
 
-    label_mapeamento = {
-        "Email profissional relacionado a trabalho": "PRODUTIVO",
-        "Email pessoal sem relação com trabalho": "IMPRODUTIVO",
-    }
+    hypothesis_template = (
+        "Classifique o e-mail como {}. "
+        "Use PRODUTIVO apenas para e-mails relacionados a trabalho, projetos, reuniões ou tarefas profissionais. "
+        "Use IMPRODIVO para mensagens pessoais, felicitações, cumprimentos, eventos de vida pessoal."
+    )
 
     try:
         resposta = classifier(
             email_limpo,
             candidate_labels=candidate_labels,
-            hypothesis_template="Este email é {}.",
+            hypothesis_template=hypothesis_template,
         )
-
-        # del classifier
-        # gc.collect()
-        # torch.cuda.empty_cache()
 
         if not resposta or "labels" not in resposta or "scores" not in resposta:
             return "ERRO_CLASSIFICACAO"
 
+        # Retorna "PRODUTIVO" ou "IMPRODUTIVO" conforme a label
         melhor_label = resposta["labels"][0]
-        return label_mapeamento.get(melhor_label, "ERRO_CLASSIFICACAO")
+        if melhor_label == "E-mail relacionado a trabalho/profissional":
+            return "PRODUTIVO"
+        elif melhor_label == "E-mail pessoal ou não relacionado a trabalho":
+            return "IMPRODUTIVO"
+        else:
+            return "ERRO_CLASSIFICACAO"
 
     except Exception as e:
         print(f"Erro na classificação: {e}")

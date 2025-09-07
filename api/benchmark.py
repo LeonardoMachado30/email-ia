@@ -53,9 +53,10 @@ if __name__ == "__main__":
     candidate_labels = ["PRODUTIVO", "IMPRODUTIVO"]
 
     modelos = [
-        "valhalla/distilbart-mnli-12-1",
-        "facebook/bart-large-mnli",
-        "MoritzLaurer/deberta-v3-base-zeroshot-v1",
+        # "valhalla/distilbart-mnli-12-1",
+        # "facebook/bart-large-mnli",
+        # "MoritzLaurer/deberta-v3-base-zeroshot-v1",
+        "typeform/distilbert-base-uncased-mnli",
     ]
 
     for m in modelos:

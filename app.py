@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
 import os
+from livereload import Server
 
 load_dotenv()
 
@@ -30,7 +31,7 @@ def processar_email():
         except Exception as e:
             return jsonify({"error": str(e)}), 400
 
-    categoria = classificar_email(email_content)
+    categoria = classificar_email(f"titulo:{titulo}.Corpo:{email_content}")
     resposta_sugerida = gerar_resposta_sugerida(email_content, categoria)
 
     return jsonify(
@@ -48,7 +49,6 @@ port = int(os.environ.get("PORT", 5000))
 
 if __name__ == "__main__":
     if app.debug:
-        from livereload import Server
 
         server = Server(app.wsgi_app)
         server.watch("*.py")
