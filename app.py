@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 
 load_dotenv()
@@ -14,7 +14,7 @@ app.debug = os.getenv("FLASK_ENV") == "development"
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return send_from_directory(os.getcwd(), "index.html")
 
 
 @app.route("/processar", methods=["POST"])
@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
         server = Server(app.wsgi_app)
         server.watch("*.py")
-        server.watch("templates/*.html")
+        server.watch("*.html")
         server.watch("static/*")
         server.serve(port=5000)
     else:

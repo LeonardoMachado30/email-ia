@@ -7,8 +7,6 @@ HF_TOKEN = os.getenv("HUGGING_FACE_TOKEN")
 if not HF_TOKEN:
     raise ValueError("Token HF não encontrado no .env")
 
-API_URL_SUGGESTION = "https://router.huggingface.co/v1/chat/completions"
-
 headers = {
     "Authorization": f"Bearer {HF_TOKEN}",
 }

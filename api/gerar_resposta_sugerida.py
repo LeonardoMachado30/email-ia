@@ -43,8 +43,6 @@ def gerar_resposta_sugerida(
             f"E-mail: {texto}"
         )
 
-    print(f"PROMPT: {prompt}")
-
     try:
         resposta = query(
             API_URL_SUGGESTION,
