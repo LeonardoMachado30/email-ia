@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
 import os
-from livereload import Server
 
 load_dotenv()
 
@@ -49,6 +48,7 @@ port = int(os.environ.get("PORT", 5000))
 
 if __name__ == "__main__":
     if app.debug:
+        from livereload import Server
 
         server = Server(app.wsgi_app)
         server.watch("*.py")
