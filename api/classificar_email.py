@@ -23,7 +23,7 @@ import gc
 
 classifier = pipeline(
     "zero-shot-classification",
-    model="facebook/bart-large-mnli",
+    model="valhalla/distilbart-mnli-12-1",
     device=-1,  # Força uso de CPU
     return_all_scores=False,  # Apenas o melhor resultado
     use_fast=True,  # Tokenizer rápido
