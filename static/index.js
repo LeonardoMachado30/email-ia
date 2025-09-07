@@ -124,6 +124,12 @@ form.addEventListener("submit", async (e) => {
 
   const formData = new FormData(form);
 
+  const jsonData = Object.fromEntries(formData);
+  const jsonString = JSON.stringify(jsonData);
+
+  console.log(jsonData); // Objeto JavaScript
+  console.log(jsonString); // String JSON
+
   clearAllBtn.disabled = true;
   document.getElementById("remetente").disabled = true;
   document.getElementById("titulo").disabled = true;
@@ -147,14 +153,72 @@ form.addEventListener("submit", async (e) => {
     });
     localStorage.setItem("history", JSON.stringify(history));
 
-    resultadoContainer.innerHTML = `
-            <div class="resultado">
-              <h2>Resultado da Análise</h2>
-              <p><strong>Categoria:</strong> ${result.categoria}</p>
-              <p><strong>Resposta Sugerida:</strong></p>
-              <p>${result.resposta_sugerida}</p>
-            </div>
-          `;
+    // Limpa o container antes de adicionar novo resultado
+    resultadoContainer.innerHTML = "";
+
+    // Cria o elemento principal do resultado
+    const resultadoDiv = document.createElement("div");
+    resultadoDiv.className = "resultado";
+    resultadoDiv.style.position = "relative";
+
+    // Título
+    const titulo = document.createElement("h2");
+    titulo.textContent = "Resultado da Análise";
+    resultadoDiv.appendChild(titulo);
+
+    // Categoria
+    const categoriaP = document.createElement("p");
+    categoriaP.innerHTML = `<strong>Categoria:</strong> ${result.categoria}`;
+    resultadoDiv.appendChild(categoriaP);
+
+    // Resposta Sugerida label
+    const respostaLabel = document.createElement("p");
+    respostaLabel.innerHTML = "<strong>Resposta Sugerida:</strong>";
+    resultadoDiv.appendChild(respostaLabel);
+
+    // Resposta Sugerida texto
+    const respostaTexto = document.createElement("p");
+    respostaTexto.textContent = result.resposta_sugerida;
+    respostaTexto.style.whiteSpace = "pre-line";
+    respostaTexto.id = "respostaSugeridaTexto";
+    resultadoDiv.appendChild(respostaTexto);
+
+    // Botão flutuante de copiar
+    const copiarBtn = document.createElement("button");
+    copiarBtn.textContent = "Copiar";
+    copiarBtn.title = "Copiar resposta sugerida";
+    copiarBtn.style.position = "absolute";
+    copiarBtn.style.top = "10px";
+    copiarBtn.style.right = "10px";
+    copiarBtn.style.padding = "6px 12px";
+    copiarBtn.style.background = "#5e02b4";
+    copiarBtn.style.color = "#fff";
+    copiarBtn.style.border = "none";
+    copiarBtn.style.borderRadius = "4px";
+    copiarBtn.style.cursor = "pointer";
+    copiarBtn.style.zIndex = "10";
+    copiarBtn.style.fontSize = "13px";
+    copiarBtn.style.boxShadow = "0 2px 6px rgba(0,0,0,0.08)";
+
+    copiarBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(result.resposta_sugerida);
+        copiarBtn.textContent = "Copiado!";
+        setTimeout(() => {
+          copiarBtn.textContent = "Copiar";
+        }, 1200);
+      } catch (e) {
+        copiarBtn.textContent = "Erro ao copiar";
+        setTimeout(() => {
+          copiarBtn.textContent = "Copiar";
+        }, 1200);
+      }
+    });
+
+    resultadoDiv.appendChild(copiarBtn);
+
+    // Adiciona o resultado ao container
+    resultadoContainer.appendChild(resultadoDiv);
     toggleClearButtons();
   } catch (err) {
     resultadoContainer.innerHTML = `<p style="color:red;">${err}</p>`;
